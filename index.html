@@ -48,6 +48,7 @@
     </div>
    
     <script>
+        //using API key to fetch data from openweathermap.org
         const apiKey="eec6b859a7c4245295e63bf7053e8bc6";
         const apiUrl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
         const searchBox=document.querySelector(".search input");
@@ -55,27 +56,41 @@
         const weatherIcon=document.querySelector(".weather-icon");
 
         async function checkWeather(city)
+        //everything depends on the city name
+        //data is fetched from the api and stored in the variable response
         {
+            //in the url part i need to add the apiKey part and the city name part
             const response=await fetch(apiUrl+city+`&appid=${apiKey}`);
             
             if(response.status==404)
+            //if the city name is not found then the status code is 404
             {
+                
                 document.querySelector(".error").style.display="block";
+                //if the city name is not found then the error message is displayed
+                // and the weather details are hidden  
                 document.querySelector(".weather").style.display="none";
                 
             }
             else
             {
-
-               
+                //if the name is found then the data is fetched and stored in the variable data
                 var data=await response.json();
                 console.log(data);
 
+                //the data is displayed in the console, if its correct or not
+
+                //the name of the city is displayed
+                //the temperature is displayed
+                //the humidity is displayed
+                //the wind speed is displayed
                 document.querySelector(".city").innerHTML=data.name;
                 document.querySelector(".temp").innerHTML=Math.round(data.main.temp)+"°c";
                 document.querySelector(".humidity").innerHTML=data.main.humidity+"%";
                 document.querySelector(".wind").innerHTML=data.wind.speed+"Km/h";
-                
+
+
+                //the weather icon is displayed according to the weather
                 if(data.weather[0].main=="Clouds"){
                     weatherIcon.src="images/clouds.png";
                 }
@@ -91,13 +106,18 @@
                 else if(data.weather[0].main=="Drizzle"){
                     weatherIcon.src="images/drizzle.png";
                 }
+
+                //as the name of the city is found the weather details are displayed
+                //and the error message is hidden
                 document.querySelector(".weather").style.display="block";
                 document.querySelector(".error").style.display="none";
 
             }
         
         }
+            //on clicking the search button the checkWeather function is called
             searchBtn.addEventListener("click",function(){
+                //the value of the search box is passed as a parameter to the checkWeather function
                 checkWeather(searchBox.value);
             });
 
